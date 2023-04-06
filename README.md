@@ -7,3 +7,8 @@ Automated script to install and setup Flutter development environment with Homeb
 ```sh
 curl -fsSl https://raw.githubusercontent.com/shan-shaji/setup-flutter/main/setup-flutter | /bin/bash
 ```
+
+Supports 
+
+- ✅ Mac OS
+- 🚧 Ubuntu(Still Testing)
