@@ -1,4 +1,4 @@
-# Flutter Prep
+# Setup Flutter
 
 Automated script to install and setup Flutter development environment with Homebrew and FVM. Compatible with macOS and Linux.
 
