@@ -15,16 +15,13 @@ if [ "$(uname)" == "Darwin" ]; then
     fi
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Linux
-    if ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.bashrc && ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.zshrc; then
-        if [ -n "$ZSH_VERSION" ]; then
-            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.zshrc
-        elif [ -n "$BASH_VERSION" ]; then
-            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
-        fi
+    if ! command -v snap &> /dev/null; then
+        sudo apt-get update
+        sudo apt-get install -y snapd
     fi
 fi
 
-# Reload shell configuration to apply Homebrew PATH changes
+# Reload shell configuration to apply PATH changes
 if [ -n "$ZSH_VERSION" ]; then
     source ~/.zshrc
 elif [ -n "$BASH_VERSION" ]; then
@@ -32,13 +29,23 @@ elif [ -n "$BASH_VERSION" ]; then
 fi
 
 # Check if brew command is available
+# &> /dev/null: This is a redirection that redirects both 
+# the standard output and standard error streams of the command to the null device, 4
+# discarding any output that the command may produce. 
+# This is done to make the command run silently, without producing any output on the screen.
 if ! command brew -v &> /dev/null; then
     echo "Homebrew not found. Please check the Homebrew installation and PATH setup."
     exit 1
 fi
+x
 
-# Install Java if it's not already installed
-brew list --cask adoptopenjdk/openjdk/adoptopenjdk8 || brew install --cask adoptopenjdk/openjdk/adoptopenjdk8
+if [ "$(uname)" == "Darwin" ]; then
+    # Install Java if it's not already installed
+    brew list --cask adoptopenjdk/openjdk/adoptopenjdk8 || brew install --cask adoptopenjdk/openjdk/adoptopenjdk8
+else
+    sudo snap install openjdk
+fi
+
 
 # Install Android Studio if it's not already installed
 if [ "$(uname)" == "Darwin" ]; then
@@ -46,7 +53,9 @@ if [ "$(uname)" == "Darwin" ]; then
         brew list --cask android-studio || brew install --cask android-studio
     fi
 else
-    brew list --cask android-studio || brew install --cask android-studio
+    if [ ! -d "/snap/bin/android-studio" ]; then
+        sudo snap install android-studio --classic
+    fi
 fi
 
 # Install Visual Studio Code if it's not already installed
@@ -55,7 +64,9 @@ if [ "$(uname)" == "Darwin" ]; then
         brew list --cask visual-studio-code || brew install --cask visual-studio-code
     fi
 else
-    brew list --cask visual-studio-code || brew install --cask visual-studio-code
+    if [ ! -d "/snap/bin/code" ]; then
+        sudo snap install --classic code
+    fi
 fi
 
 # Install FVM if it's not already installed
@@ -72,9 +83,21 @@ else
 fi
 
 # Add FVM executable to the PATH in the shell configuration file
+if ! grep -q 'export PATH="$PATH":"$HOME/.pub-cache/bin"' $SHELL_CONFIG; then
+    if [ "$(uname)" == "Linux" ]; then
+        echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> $SHELL_CONFIG
+    fi
+fi
+
+
+# Add flutter path to shell configuration
 if ! grep -q 'export PATH="$HOME/fvm/default/bin"' $SHELL_CONFIG; then
-     sed -i '' '1i\
-        export PATH="$HOME/fvm/default/bin:$PATH"' $SHELL_CONFIG
+    if [ "$(uname)" == "Darwin" ]; then
+        sed -i '' '1i\
+        export PATH="$HOME/fvm/default/bin"' $SHELL_CONFIG
+    else
+        echo 'export PATH="$HOME/fvm/default/bin"' >> $SHELL_CONFIG
+    fi
 fi
 
 # Activate changes to shell configuration file
