@@ -14,7 +14,16 @@ if [ "$(uname)" == "Darwin" ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-    # Linux
+    # Add homebrew to path if it's not already added
+    if ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.bashrc && ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.zshrc; then
+        if [ -n "$ZSH_VERSION" ]; then
+            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.zshrc
+        elif [ -n "$BASH_VERSION" ]; then
+            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
+        fi
+    fi
+
+    # Install snap if not installed
     if ! command -v snap &> /dev/null; then
         sudo apt-get update
         sudo apt-get install -y snapd
@@ -91,12 +100,12 @@ fi
 
 
 # Add flutter path to shell configuration
-if ! grep -q 'export PATH="$HOME/fvm/default/bin"' $SHELL_CONFIG; then
+if ! grep -q 'export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG; then
     if [ "$(uname)" == "Darwin" ]; then
         sed -i '' '1i\
-        export PATH="$HOME/fvm/default/bin"' $SHELL_CONFIG
+        export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG
     else
-        echo 'export PATH="$HOME/fvm/default/bin"' >> $SHELL_CONFIG
+        echo 'export PATH="$PATH":"$HOME/fvm/default/bin"' >> $SHELL_CONFIG
     fi
 fi
 
