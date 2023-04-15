@@ -1,19 +1,31 @@
 #!/bin/bash
 
-# Install Homebrew if it's not already installed
-which brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Check if Homebrew is installed, and install it if necessary
+if ! command -v brew &> /dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
 # Add Homebrew to the PATH if it's not already there
 if [ "$(uname)" == "Darwin" ]; then
-    # macOS
+
     if [ ! -f ~/.zshrc ]; then
         touch ~/.zshrc
     fi
+
     if ! grep -q 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zshrc; then
         (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.zshrc
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
+
+    # Check if brew command is available
+    if ! command brew -v &> /dev/null; then
+        echo "Homebrew not found. Please check the Homebrew installation and PATH setup."
+        exit 1
+    fi
+
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+
     # Add homebrew to path if it's not already added
     if ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.bashrc && ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.zshrc; then
         if [ -n "$ZSH_VERSION" ]; then
@@ -23,7 +35,10 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
         fi
     fi
 
-    # Install snap if not installed
+    # Since --cask option is not supported in linux  using snap
+    # to install applications.
+    #
+    # Install snap package.
     if ! command -v snap &> /dev/null; then
         sudo apt-get update
         sudo apt-get install -y snapd
@@ -37,16 +52,6 @@ elif [ -n "$BASH_VERSION" ]; then
     source ~/.bashrc
 fi
 
-# Check if brew command is available
-# &> /dev/null: This is a redirection that redirects both 
-# the standard output and standard error streams of the command to the null device, 4
-# discarding any output that the command may produce. 
-# This is done to make the command run silently, without producing any output on the screen.
-if ! command brew -v &> /dev/null; then
-    echo "Homebrew not found. Please check the Homebrew installation and PATH setup."
-    exit 1
-fi
-x
 
 if [ "$(uname)" == "Darwin" ]; then
     # Install Java if it's not already installed
