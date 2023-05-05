@@ -43,3 +43,17 @@ If you encounter any issues while running the script, please create an issue on 
 **Note:** This script installs the stable version of Flutter. If you want to install a different version, you can do so using `fvm`. For more information on `fvm`, please refer to the [GitHub repository](https://github.com/leoafarias/fvm).
 
 **Note:** This script sets up `fvm` and adds it to the PATH. You can use `fvm` to manage different versions of Flutter on the same machine.
+
+
+## Troubleshooting
+
+1. If you are facing this error when trying to run the script please try attatching `sudo` before the install script.
+
+  ```sh
+  Running in non-interactive mode because `stdin` is not a TTY.
+  ==> Checking for `sudo` access (which may request your password)...
+  Need sudo access on macOS (e.g. the user shan needs to be an Administrator)!
+  /bin/bash: line 18: /opt/homebrew/bin/brew: No such file or directory
+  ```
+
+
