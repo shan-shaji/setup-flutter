@@ -1,19 +1,1 @@
-install_vs_code() {
-    if [ "$(uname)" == "Darwin" ]; then
-        if [ ! -d "/Applications/Visual Studio Code.app" ]; then
-            brew list --cask visual-studio-code || brew install --cask visual-studio-code
-        else
-            echo "✅ Visual studio code is already installed"
-            return 0
-        fi
-    else
-        if [ ! -d "/snap/bin/code" ]; then
-            sudo snap install --classic code
-        else
-            echo "✅ Visual studio code is already installed"
-            return 0
-        fi
-    fi
 
-    echo "✅ Visual studio code installed"
-}
