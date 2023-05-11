@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source "./install_homebrew"
+source "./helpers/shell_helper"
+source "./install_java"
+source "./install_android_studio"
+source "./install_fvm"
+
+# Install Homebrew
+check_install_homebrew
+
+# Reload shell configuration to apply PATH changes
+reload_shell
+
+# Install Android studio if not already installed
+install_android_studio
+
+
+
+
+install_fvm

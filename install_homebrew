@@ -1,0 +1,51 @@
+check_install_homebrew() {
+    if ! command -v brew &> /dev/null; then
+        echo "Installing Homebrew..."
+        install_homebrew
+
+        if [ "$(uname)" == "Darwin" ]; then
+            setup_macos_path
+            if ! command brew -v &> /dev/null; then
+                echo "Homebrew not found. Please check the Homebrew installation and PATH setup."
+                exit 1
+            fi
+        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+            setup_linux_path
+            if ! command -v snap &> /dev/null; then
+                install_snap
+            fi
+        fi
+    else
+        echo "✅ Homebrew Installed"
+    fi
+}
+
+install_homebrew() {
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+
+setup_macos_path() {
+    if [ ! -f ~/.zshrc ]; then
+        touch ~/.zshrc
+    fi
+
+    if ! grep -q 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zprofile; then
+        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+}
+
+setup_linux_path() {
+    if ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.bashrc && ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.zshrc; then
+        if [ -n "$ZSH_VERSION" ]; then
+            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.zshrc
+        elif [ -n "$BASH_VERSION" ]; then
+            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
+        fi
+    fi
+}
+
+install_snap() {
+    sudo apt-get update
+    sudo apt-get install -y snapd
+}
