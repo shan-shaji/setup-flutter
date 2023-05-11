@@ -13,7 +13,7 @@ This script automates the installation of all required tools to set up a new mac
 1. Open the terminal.
 2. Run the following command:
  ```sh
-curl -fsSl https://raw.githubusercontent.com/shan-shaji/setup-flutter/main/setup-flutter | /bin/bash
+curl -fsSl hhttps://raw.githubusercontent.com/shan-shaji/setup-flutter/main/setup_flutter | /bin/bash
 ```
 
 3. Wait for the script to complete. It may take some time depending on the speed of your internet connection.

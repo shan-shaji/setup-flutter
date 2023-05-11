@@ -1,10 +1,11 @@
 #!/bin/bash
 
-source "./install_homebrew"
-source "./helpers/shell_helper"
-source "./install_java"
-source "./install_android_studio"
-source "./install_fvm"
+source "install_homebrew"
+source "helpers/shell_helper"
+source "install_java"
+source "install_android_studio"
+source "install_fvm"
+source "install_vs_code"
 
 # Install Homebrew
 check_install_homebrew
@@ -15,7 +16,8 @@ reload_shell
 # Install Android studio if not already installed
 install_android_studio
 
+# Install Visual Studio Code
+install_vs_code
 
-
-
+# Install FVM
 install_fvm
