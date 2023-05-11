@@ -1,14 +1,15 @@
 #!/bin/bash
 
-#
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/install_homebrew"
-source "$SCRIPT_DIR/helpers/shell_helper"
-source "$SCRIPT_DIR/install_java"
-source "$SCRIPT_DIR/install_android_studio"
-source "$SCRIPT_DIR/install_fvm"
-source "$SCRIPT_DIR/install_vs_code"
+RAW_GITHUB_URL=https://raw.githubusercontent.com/shan-shaji/setup-flutter/main
+
+source "$RAW_GITHUB_URL/install_homebrew"
+source "$RAW_GITHUB_URL/helpers/shell_helper"
+source "$RAW_GITHUB_URL/install_java"
+source "$RAW_GITHUB_URL/install_android_studio"
+source "$RAW_GITHUB_URL/install_fvm"
+source "$RAW_GITHUB_URL/install_vs_code"
+
 
 
 # Install Homebrew
