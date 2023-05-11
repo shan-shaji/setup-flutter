@@ -32,7 +32,6 @@ If you encounter any issues while running the script, please create an issue on 
 
 - Install Home Brew
 - Install Snap - Linux
-- Install Open JDK 8
 - Install Android Studio
 - Install VS Code
 - Install FVM

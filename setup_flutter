@@ -1,11 +1,15 @@
 #!/bin/bash
 
-source "install_homebrew"
-source "helpers/shell_helper"
-source "install_java"
-source "install_android_studio"
-source "install_fvm"
-source "install_vs_code"
+#
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+source "$SCRIPT_DIR/install_homebrew"
+source "$SCRIPT_DIR/helpers/shell_helper"
+source "$SCRIPT_DIR/install_java"
+source "$SCRIPT_DIR/install_android_studio"
+source "$SCRIPT_DIR/install_fvm"
+source "$SCRIPT_DIR/install_vs_code"
+
 
 # Install Homebrew
 check_install_homebrew
