@@ -5,11 +5,11 @@ RAW_GITHUB_URL="https://raw.githubusercontent.com/shan-shaji/setup-flutter/main"
 
 # Source the helper functions
 source <(curl -fsSL "$RAW_GITHUB_URL/helpers/shell_helper")
-source <(curl -fsSL "$RAW_GITHUB_URL/helpers/install_homebrew")
-source <(curl -fsSL "$RAW_GITHUB_URL/helpers/install_java")
-source <(curl -fsSL "$RAW_GITHUB_URL/helpers/install_android_studio")
-source <(curl -fsSL "$RAW_GITHUB_URL/helpers/install_fvm")
-source <(curl -fsSL "$RAW_GITHUB_URL/helpers/install_vs_code")
+source <(curl -fsSL "$RAW_GITHUB_URL/install_homebrew")
+source <(curl -fsSL "$RAW_GITHUB_URL/install_java")
+source <(curl -fsSL "$RAW_GITHUB_URL/install_android_studio")
+source <(curl -fsSL "$RAW_GITHUB_URL/install_fvm")
+source <(curl -fsSL "$RAW_GITHUB_URL/install_vs_code")
 
 
 # Install Homebrew
