@@ -13,7 +13,7 @@ This script automates the installation of all required tools to set up a new mac
 1. Open the terminal.
 2. Run the following command:
  ```sh
-curl -fsSl hhttps://raw.githubusercontent.com/shan-shaji/setup-flutter/main/setup_flutter | /bin/bash
+curl -fsSl https://raw.githubusercontent.com/shan-shaji/setup-flutter/main/setup_flutter | /bin/bash
 ```
 
 3. Wait for the script to complete. It may take some time depending on the speed of your internet connection.
@@ -55,4 +55,7 @@ If you encounter any issues while running the script, please create an issue on 
   /bin/bash: line 18: /opt/homebrew/bin/brew: No such file or directory
   ```
 
+## Background
+
+The purpose of this project is to alleviate developers from the inconvenience of configuring Flutter and its related software when transitioning to a different device. 
 
