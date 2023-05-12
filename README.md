@@ -55,6 +55,9 @@ If you encounter any issues while running the script, please create an issue on 
   /bin/bash: line 18: /opt/homebrew/bin/brew: No such file or directory
   ```
 
+If you are facing any issues while using the script feel free to 
+create an issue [here](https://github.com/shan-shaji/setup-flutter/issues).
+
 ## Background
 
 The purpose of this project is to alleviate developers from the inconvenience of configuring Flutter and its related software when transitioning to a different device. 
