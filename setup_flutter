@@ -1,167 +1,165 @@
 #!/bin/bash
 
 # Check and Install Home Brew
-check_install_homebrew() {
-    if ! command -v brew &> /dev/null; then
-        echo "Installing Homebrew..."
-        install_homebrew
+check_and_install_homebrew() {
+  if ! command -v brew &>/dev/null; then
+    echo "Installing Homebrew..."
+    install_homebrew
 
-        if [ "$(uname)" == "Darwin" ]; then
-            setup_macos_path
-            if ! command brew -v &> /dev/null; then
-                echo "Homebrew not found. Please check the Homebrew installation and PATH setup."
-                exit 1
-            fi
-        elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-            setup_linux_path
-            if ! command -v snap &> /dev/null; then
-                install_snap
-            fi
-        fi
-    else
-        echo "✅ Homebrew Installed."
+    if [ "$(uname)" == "Darwin" ]; then
+      setup_macos_path
+      if ! command brew -v &>/dev/null; then
+        echo "Homebrew not found. Please check the Homebrew installation and PATH setup."
+        exit 1
+      fi
+    elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+      setup_linux_path
+      if ! command -v snap &>/dev/null; then
+        install_snap
+      fi
     fi
+  else
+    echo "✅ Homebrew Installed."
+  fi
 }
 
 install_homebrew() {
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
 setup_macos_path() {
-    if [ ! -f ~/.zshrc ]; then
-        touch ~/.zshrc
-    fi
+  if [ ! -f ~/.zshrc ]; then
+    touch ~/.zshrc
+  fi
 
-    if ! grep -q 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zprofile; then
-        (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> ~/.zprofile
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    fi
+  if ! grep -q 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zprofile; then
+    (
+      echo
+      echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+    ) >>~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
 }
 
 setup_linux_path() {
-    if ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.bashrc && ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.zshrc; then
-        if [ -n "$ZSH_VERSION" ]; then
-            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.zshrc
-        elif [ -n "$BASH_VERSION" ]; then
-            echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
-        fi
+  if ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.bashrc && ! grep -q 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' ~/.zshrc; then
+    if [ -n "$ZSH_VERSION" ]; then
+      echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.zshrc
+    elif [ -n "$BASH_VERSION" ]; then
+      echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bashrc
     fi
+  fi
 }
 
 install_snap() {
-    sudo apt-get update
-    sudo apt-get install -y snapd
+  sudo apt-get update
+  sudo apt-get install -y snapd
 }
 
 install_android_studio() {
-    if [ "$(uname)" == "Darwin" ]; then
-        if [ ! -d "/Applications/Android Studio.app" ]; then
-            brew list --cask android-studio || brew install --cask android-studio
-        else
-            echo "✅ Android Studio is already installed."
-            return 0
-        fi
+  if [ "$(uname)" == "Darwin" ]; then
+    if [ ! -d "/Applications/Android Studio.app" ]; then
+      brew list --cask android-studio || brew install --cask android-studio
     else
-        if [ ! -d "/snap/bin/android-studio" ]; then
-            sudo snap install android-studio --classic
-        else
-            echo "✅ Android Studio is already installed."
-            return 0
-        fi
+      echo "✅ Android Studio is already installed."
+      return 0
     fi
-    echo "✅ Android Studio Installed."
+  else
+    if [ ! -d "/snap/bin/android-studio" ]; then
+      sudo snap install android-studio --classic
+    else
+      echo "✅ Android Studio is already installed."
+      return 0
+    fi
+  fi
+  echo "✅ Android Studio Installed."
 }
 
 install_vs_code() {
-    if [ "$(uname)" == "Darwin" ]; then
-        if [ ! -d "/Applications/Visual Studio Code.app" ]; then
-            brew list --cask visual-studio-code || brew install --cask visual-studio-code
-        else
-            echo "✅ Visual studio code is already installed."
-            return 0
-        fi
+  if [ "$(uname)" == "Darwin" ]; then
+    if [ ! -d "/Applications/Visual Studio Code.app" ]; then
+      brew list --cask visual-studio-code || brew install --cask visual-studio-code
     else
-        if [ ! -d "/snap/bin/code" ]; then
-            sudo snap install --classic code
-        else
-            echo "✅ Visual studio code is already installed."
-            return 0
-        fi
+      echo "✅ Visual studio code is already installed."
+      return 0
     fi
+  else
+    if [ ! -d "/snap/bin/code" ]; then
+      sudo snap install --classic code
+    else
+      echo "✅ Visual studio code is already installed."
+      return 0
+    fi
+  fi
 
-    echo "✅ Visual studio code installed."
+  echo "✅ Visual studio code installed."
 }
 
 install_fvm() {
-    install_fvm_if_not_installed
+  install_fvm_if_not_installed
 
-    configure_shell
+  configure_shell
 
-    source $SHELL_CONFIG
+  source $SHELL_CONFIG
 
-    fvm list | grep 'stable' || fvm install stable
+  fvm list | grep 'stable' || fvm install stable
 
-    fvm global stable
+  fvm global stable
 
-    export PATH="$HOME/fvm/default/bin:$PATH"
+  export PATH="$HOME/fvm/default/bin:$PATH"
 
-    flutter doctor
+  flutter doctor
 }
 
 install_fvm_if_not_installed() {
-    if ! brew list fvm &> /dev/null; then
-        brew tap leoafarias/fvm
-        brew install fvm
-        echo "✅ FVM Installed."
-    else
-        echo "✅ FVM already Installed."
-    fi
+  if ! brew list fvm &>/dev/null; then
+    brew tap leoafarias/fvm
+    brew install fvm
+    echo "✅ FVM Installed."
+  else
+    echo "✅ FVM already Installed."
+  fi
 }
 
 configure_shell() {
+  if [ "$(uname)" == "Darwin" ]; then
+    SHELL_CONFIG=~/.zshrc
+  else
+    SHELL_CONFIG=~/.bashrc
+  fi
+
+  if ! grep -q 'export PATH="$PATH":"$HOME/.pub-cache/bin"' $SHELL_CONFIG; then
+    echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >>$SHELL_CONFIG
+    echo "✅ Added flutter executables to path."
+  fi
+
+  if ! grep -q 'export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG; then
     if [ "$(uname)" == "Darwin" ]; then
-        SHELL_CONFIG=~/.zshrc
+      sed -i '' '1i\
+            export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG
     else
-        SHELL_CONFIG=~/.bashrc
-    fi
-
-    if ! grep -q 'export PATH="$PATH":"$HOME/.pub-cache/bin"' $SHELL_CONFIG; then
-        echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> $SHELL_CONFIG
-        echo "✅ Added flutter executables to path."
-    fi
-
-    if ! grep -q 'export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG; then
-        if [ "$(uname)" == "Darwin" ]; then
-            sed -i '' '1i\
+      sed -i '1i\
             export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG
-        else
-            sed -i '1i\
-            export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG
-        fi
     fi
+  fi
 }
 
 # Reload shell
 reload_shell() {
-    if [ -n "$ZSH_VERSION" ]; then
-        source ~/.zshrc
-    elif [ -n "$BASH_VERSION" ]; then
-        source ~/.bashrc
-    fi
-    echo "✅ Shell reloaded."
+  if [ -n "$ZSH_VERSION" ]; then
+    source ~/.zshrc
+  elif [ -n "$BASH_VERSION" ]; then
+    source ~/.bashrc
+  fi
+  echo "✅ Shell reloaded."
 }
 
-# Install Homebrew
-check_install_homebrew
+check_and_install_homebrew
 
-# Reload shell configuration to apply PATH changes
 reload_shell
 
-# Install Android studio if not already installed
 install_android_studio
 
-# Install Visual Studio Code
 install_vs_code
 
-# Install FVM
 install_fvm
