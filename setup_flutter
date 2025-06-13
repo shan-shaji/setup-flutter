@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Check and Install Home Brew
 check_and_install_homebrew() {
   if ! command -v brew &>/dev/null; then
     echo "Installing Homebrew..."
