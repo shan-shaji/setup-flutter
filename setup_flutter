@@ -144,7 +144,6 @@ configure_shell() {
   fi
 }
 
-# Reload shell
 reload_shell() {
   if [ -n "$ZSH_VERSION" ]; then
     source ~/.zshrc
