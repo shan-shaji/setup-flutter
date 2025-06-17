@@ -133,13 +133,8 @@ configure_shell() {
   fi
 
   if ! grep -q 'export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG; then
-    if [ "$(uname)" == "Darwin" ]; then
-      sed -i '' '1i\
-            export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG
-    else
-      sed -i '1i\
-            export PATH="$PATH":"$HOME/fvm/default/bin"' $SHELL_CONFIG
-    fi
+    echo 'export PATH="$PATH":"$HOME/fvm/default/bin"' >> $SHELL_CONFIG
+    echo "✅ Added flutter to path."
   fi
 }
 
